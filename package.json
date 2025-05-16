@@ -2,8 +2,38 @@
   "name": "make-ideas",
   "private": "true",
   "version": "0.0.0",
+  "scripts": {
+    "b": "pnpm --filter @make-ideas/backend",
+    "w": "pnpm --filter @make-ideas/webapp",
+    "dev": "pnpm -r --parallel dev",
+    "types": "concurrently 'pnpm b types' 'pnpm w types'",
+    "lint": "concurrently 'pnpm b lint' 'pnpm w lint'",
+    "prettify": "pnpm -r --parallel prettify",
+    "prepare": "git config core.hooksPath .git-hooks || echo 'Not in a git repo'"
+  },
   "workspaces": [
     "webapp",
     "backend"
-  ]
+  ],
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.20.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^15.14.0",
+    "lint-staged": "^16.0.0",
+    "prettier": "^3.4.2",
+    "prettier-eslint": "^16.3.0",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0"
+  },
+  "overrides": {
+    "eslint": "9.20.0"
+  }
 }
