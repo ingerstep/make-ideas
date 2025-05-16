@@ -28,8 +28,6 @@ const ideas = [
   },
 ]
 
-if (Math.random()) console.log(x)
-
 const trpc = initTRPC.create()
 
 export const trpcRouter = trpc.router({
