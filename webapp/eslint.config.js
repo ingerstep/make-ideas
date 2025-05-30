@@ -13,6 +13,22 @@ export default [
     },
     rules: {
       'react/react-in-jsx-scope': 'off',
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports', disallowTypeAnnotations: false },
+      ],
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^@make-ideas/backend/(?!(.*/)?input$).+$',
+              message: 'Импорт из бэкенда разрешен только для файлов input',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
     },
   },
 
