@@ -1,0 +1,10 @@
+@use '../Input/index.module.scss' as *;
+
+.field {
+  .input {
+    min-height: 150px;
+    width: 100%;
+    max-width: none;
+    resize: vertical;
+  }
+}

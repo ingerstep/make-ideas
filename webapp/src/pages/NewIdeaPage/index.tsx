@@ -1,12 +1,19 @@
 import { zCreateIdeaTrpcInput } from '@make-ideas/backend/src/router/createIdea/input'
 import { useFormik } from 'formik'
 import { withZodSchema } from 'formik-validator-zod'
+import { useState } from 'react'
+import { Alert } from '../../components/Alert'
+import { Button } from '../../components/Button'
+import { FormItems } from '../../components/FormItems'
 import { Input } from '../../components/Input'
 import { Segment } from '../../components/Segment'
 import { Textarea } from '../../components/Textarea'
 import { trpc } from '../../lib/trpc'
 
 export const NewIdeaPage = () => {
+  const [successMessageVisible, setSuccessMessageVisible] = useState(false)
+  const [submitiingError, setSubmitiingError] = useState<string | null>(null)
+
   const createIdea = trpc.createIdea.useMutation()
 
   const formik = useFormik({
@@ -18,7 +25,19 @@ export const NewIdeaPage = () => {
     },
     validate: withZodSchema(zCreateIdeaTrpcInput),
     onSubmit: async (values) => {
-      await createIdea.mutateAsync(values)
+      try {
+        await createIdea.mutateAsync(values)
+        formik.resetForm()
+        setSuccessMessageVisible(true)
+        setTimeout(() => {
+          setSuccessMessageVisible(false)
+        }, 2500)
+      } catch (e: any) {
+        setSubmitiingError(e.message)
+        setTimeout(() => {
+          setSubmitiingError(null)
+        }, 2500)
+      }
     },
   })
 
@@ -30,12 +49,17 @@ export const NewIdeaPage = () => {
           void formik.handleSubmit()
         }}
       >
-        <Input name="name" label="Name" formik={formik} />
-        <Input name="nick" label="Nick" formik={formik} />
-        <Input name="description" label="Description" formik={formik} />
-        <Textarea name="text" label="Text" formik={formik} />
-        {!formik.isValid && !!formik.submitCount && <div style={{ color: 'red' }}>Some fields are invalid</div>}
-        <button type="submit">Create idea</button>
+        <FormItems>
+          <Input name="name" label="Name" formik={formik} />
+          <Input name="nick" label="Nick" formik={formik} />
+          <Input name="description" label="Description" formik={formik} maxWidth={500} />
+          <Textarea name="text" label="Text" formik={formik} />
+
+          {!formik.isValid && !!formik.submitCount && <div style={{ color: 'red' }}>Some fields are invalid</div>}
+          {!!submitiingError && <Alert color="red">submitiingError</Alert>}
+          {successMessageVisible && <Alert color="green">Idea created</Alert>}
+          <Button loading={formik.isSubmitting}>Create idea</Button>
+        </FormItems>
       </form>
     </Segment>
   )

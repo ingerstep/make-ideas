@@ -1,0 +1,38 @@
+@use '../../styles/vars' as *;
+@use '../../styles/mixins' as *;
+
+.field {
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  .label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  .input {
+    display: block;
+    padding: 7px;
+    border: 1px solid $black;
+    border-radius: $borderRadiusSmall;
+    background-color: $white;
+    outline: none;
+    width: 100%;
+    max-width: 200px;
+
+    &:focus {
+      border-color: $blue;
+    }
+
+    &.invalid {
+      border-color: $red;
+    }
+  }
+
+  .error {
+    margin-top: 2px;
+    color: $red;
+  }
+}

@@ -1,4 +1,4 @@
-import { type TrpcRouter } from '@make-ideas/backend/src/router'
+import { type TrpcRouter } from '@make-ideas/backend/src/router/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createTRPCReact, httpBatchLink } from '@trpc/react-query'
 import { type ReactNode } from 'react'

@@ -11,5 +11,3 @@ export const trpcRouter = trpc.router({
   getIdeas: getIdeasTrpcRoute,
   // @endindex
 })
-
-export type TrpcRouter = typeof trpcRouter
