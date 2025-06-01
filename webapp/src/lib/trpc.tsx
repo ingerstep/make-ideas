@@ -2,6 +2,7 @@ import { type TrpcRouter } from '@make-ideas/backend/src/router/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createTRPCReact, httpBatchLink } from '@trpc/react-query'
 import { type ReactNode } from 'react'
+import SuperJSON from 'superjson'
 
 export const trpc = createTRPCReact<TrpcRouter>()
 
@@ -20,6 +21,7 @@ const trpcClient = trpc.createClient({
       url: 'http://localhost:3000/trpc',
     }),
   ],
+  transformer: SuperJSON,
 })
 
 export const TrpcProvider = ({ children }: { children: ReactNode }) => {
