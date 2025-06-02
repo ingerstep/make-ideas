@@ -1,9 +1,26 @@
 import baseConfig from '../eslint.config.js'
+import nodePlugin from 'eslint-plugin-node'
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
   ...baseConfig,
-
+  {
+    plugins: {
+      node: nodePlugin,
+    },
+  },
+  {
+    rules: {
+      'node/no-process-env': 'error',
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: '[type=MetaProperty][property.name=env]',
+          message: 'Use instead import {env} from "lib/env"',
+        },
+      ],
+    },
+  },
   {
     files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
