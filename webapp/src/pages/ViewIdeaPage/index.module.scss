@@ -6,9 +6,10 @@
   margin-bottom: 10px;
 }
 
-.title {
-  font-size: 24px;
-  font-weight: 600;
+.author {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 20px;
 }
 
 .text {
@@ -17,4 +18,8 @@
   & > *:not(:first-child) {
     margin-top: 10px;
   }
+}
+
+.editButton {
+  margin-top: 20px;
 }
