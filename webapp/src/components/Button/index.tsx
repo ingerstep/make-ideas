@@ -2,7 +2,12 @@ import cn from 'classnames'
 import { Link } from 'react-router-dom'
 import cl from './index.module.scss'
 
-export const Button = ({ children, loading = false }: { children: React.ReactNode; loading?: boolean }) => {
+export type ButtonProps = {
+  children: React.ReactNode
+  loading?: boolean
+}
+
+export const Button = ({ children, loading = false }: ButtonProps) => {
   return (
     <button className={cn({ [cl.button]: true, [cl.loading]: loading })} type="submit" disabled={loading}>
       {loading ? 'Submitting...' : children}
