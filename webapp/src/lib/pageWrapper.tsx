@@ -2,6 +2,7 @@ import type { UseTRPCQueryResult, UseTRPCQuerySuccessResult } from '@trpc/react-
 import { useEffect, type FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ErrorPageComponent } from '../components/ErrorPageComponent'
+import { Loader } from '../components/Loader'
 import { NotFoundPage } from '../pages/other/NotFoundPage'
 import { useAppContext, type AppContext } from './ctx'
 import { getAllIdeasRoute } from './routes'
@@ -21,6 +22,8 @@ const checkAccessFn = <T,>(value: T, message?: string): void => {
   }
 }
 
+class GetAuthorizedMeError extends Error {}
+
 type Props = Record<string, any>
 type QueryResult = UseTRPCQueryResult<any, any>
 type QuerySuccessResult<TQueryResult extends QueryResult> = UseTRPCQuerySuccessResult<
@@ -35,6 +38,7 @@ type HelperProps<TQueryResult extends QueryResult | undefined> = {
 type setPropsProps<TQueryResult extends QueryResult | undefined> = HelperProps<TQueryResult> & {
   checkExists: typeof checkExistsFn
   checkAccess: typeof checkAccessFn
+  getAuthorizedMe: (message?: string) => NonNullable<AppContext['me']>
 }
 
 type PageWrapperProps<TProps extends Props, TQueryResult extends QueryResult | undefined> = {
@@ -85,7 +89,7 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
   }, [redirectedNeeded, navigate])
 
   if (queryResult?.isLoading || queryResult?.isFetching || redirectedNeeded) {
-    return <p>Loading...</p>
+    return <Loader type="page" />
   }
 
   if (queryResult?.isError) {
@@ -115,11 +119,19 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
     }
   }
 
+  const getAuthorizedMe = (message?: string) => {
+    if (!ctx.me) {
+      throw new GetAuthorizedMeError(message)
+    }
+    return ctx.me
+  }
+
   try {
     const props = setProps?.({
       ...helperProps,
       checkExists: checkExistsFn,
       checkAccess: checkAccessFn,
+      getAuthorizedMe,
     }) as TProps
     return <Page {...props} />
   } catch (error) {
@@ -128,6 +140,9 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
     }
     if (error instanceof checkAccessError) {
       return <ErrorPageComponent title={checkAccessTitle} message={error.message || checkAccessMessage} />
+    }
+    if (error instanceof GetAuthorizedMeError) {
+      return <ErrorPageComponent title={authorizedOnlyTitle} message={error.message || authorizedOnlyMessage} />
     }
     throw error
   }
