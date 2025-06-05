@@ -1,8 +1,8 @@
-import baseConfig from '../eslint.config.js'
-import nodePlugin from 'eslint-plugin-node'
+const baseConfig = require('../eslint.config.cjs')
+const nodePlugin = require('eslint-plugin-node')
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
-export default [
+module.exports = [
   ...baseConfig,
   {
     plugins: {
@@ -28,6 +28,11 @@ export default [
         project: ['tsconfig.json', 'tsconfig.node.json', 'tsconfig.app.json'],
       },
     },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     rules: {
       'react/react-in-jsx-scope': 'off',
       '@typescript-eslint/consistent-type-imports': [
@@ -39,16 +44,19 @@ export default [
         {
           patterns: [
             {
-              regex: '^@make-ideas/backend/(?!(.*/)?input$).+$',
-              message: 'Импорт из бэкенда разрешен только для файлов input',
-              allowTypeImports: true,
+              group: [
+                '@make-ideas/backend/**',
+                '!@make-ideas/backend/**/input',
+                '!@make-ideas/backend/src/utils/can',
+                '!@make-ideas/backend/src/router/types',
+              ],
+              message: 'Импорт из бэкенда запрещён, кроме файлов input, can и types',
             },
           ],
         },
       ],
     },
   },
-
   {
     ignores: ['dist', 'node_modules', 'coverage', 'eslint.config.js'],
   },

@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../../styles/mixins' as *;
 @use '../../styles/vars' as *;
 
@@ -5,7 +6,6 @@
   position: relative;
   padding: 8px 15px;
   color: $white;
-  background-color: #0a980a;
   border: none;
   font-weight: bold;
   border-radius: $borderRadiusSmall;
@@ -13,12 +13,28 @@
   user-select: none;
   transition: all 0.2s ease-in-out;
 
-  &:hover {
-    background-color: #21b821;
+  &.color-green {
+    background-color: #0a980a;
+
+    &:hover {
+      background-color: #21b821;
+    }
+
+    &:active {
+      background-color: #39d039;
+    }
   }
 
-  &:active {
-    background-color: #39d039;
+  &.color-red {
+    background-color: $red;
+
+    &:hover {
+      background-color: color.scale($red, $lightness: 10%);
+    }
+
+    &:active {
+      background-color: color.scale($red, $lightness: 30%);
+    }
   }
 
   &:disabled {

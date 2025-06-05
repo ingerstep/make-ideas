@@ -1,18 +1,31 @@
+import { zGetIdeasTrpcInput } from '@make-ideas/backend/src/router/ideas/getIdeas/input'
 import InfiniteScroll from 'react-infinite-scroller'
 import { Link } from 'react-router-dom'
+import { useDebounceValue } from 'usehooks-ts'
 import { Alert } from '../../../components/Alert'
+import { Input } from '../../../components/Input'
 import { layoutContentElRef } from '../../../components/Layout'
 import { Loader } from '../../../components/Loader'
 import { Segment } from '../../../components/Segment'
+import { useForm } from '../../../lib/form'
 import { getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import cl from './index.module.scss'
 
 export const AllIdeasPage = () => {
+  const { formik } = useForm({
+    initialValues: {
+      search: '',
+    },
+    validationSchema: zGetIdeasTrpcInput.pick({ search: true }),
+  })
+
+  const debouncedValue = useDebounceValue(formik.values.search, 300)
+
   const { data, error, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage, isRefetching } =
     trpc.getIdeas.useInfiniteQuery(
       {
-        limit: 2,
+        search: debouncedValue[0],
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -20,10 +33,15 @@ export const AllIdeasPage = () => {
     )
   return (
     <Segment title="All Ideas">
+      <div className={cl.filter}>
+        <Input formik={formik} label="Search" name="search" maxWidth={'100%'} />
+      </div>
       {isLoading || isRefetching ? (
         <Loader type="section" />
       ) : isError ? (
         <Alert color="red">{error.message}</Alert>
+      ) : !data.pages[0].ideas.length ? (
+        <Alert color="brown">Nothing found by search</Alert>
       ) : (
         <div className={cl.ideas}>
           <InfiniteScroll
@@ -55,7 +73,9 @@ export const AllIdeasPage = () => {
                           {idea.name}
                         </Link>
                       }
-                    />
+                    >
+                      Likes: {idea.likesCount}
+                    </Segment>
                   </div>
                 )
               })}

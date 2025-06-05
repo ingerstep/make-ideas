@@ -20,6 +20,15 @@
   }
 }
 
-.editButton {
+.likes {
+  margin-top: 20px;
+
+  .likeButton {
+    @include link;
+  }
+}
+
+.editButton,
+.blockIdea {
   margin-top: 20px;
 }
