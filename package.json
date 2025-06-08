@@ -15,6 +15,20 @@
     "webapp",
     "backend"
   ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix --quiet",
+      "git add"
+    ],
+    "*.{css,scss}": [
+      "stylelint --fix",
+      "git add"
+    ],
+    "*.{json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "concurrently": "^9.1.2",

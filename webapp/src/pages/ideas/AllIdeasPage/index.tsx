@@ -8,11 +8,15 @@ import { layoutContentElRef } from '../../../components/Layout'
 import { Loader } from '../../../components/Loader'
 import { Segment } from '../../../components/Segment'
 import { useForm } from '../../../lib/form'
+import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import cl from './index.module.scss'
 
-export const AllIdeasPage = () => {
+export const AllIdeasPage = withPageWrapper({
+  title: 'All Ideas',
+  isTitleExact: true,
+})(() => {
   const { formik } = useForm({
     initialValues: {
       search: '',
@@ -84,4 +88,6 @@ export const AllIdeasPage = () => {
       )}
     </Segment>
   )
-}
+})
+
+AllIdeasPage.displayName = 'AllIdeasPage'
