@@ -1,7 +1,7 @@
 import { zUpdateIdeaTrpcInput } from '@make-ideas/backend/src/router/ideas/updateIdea/input'
 import { canEditIdea } from '@make-ideas/backend/src/utils/can'
 import { pick } from 'lodash'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
@@ -9,13 +9,13 @@ import { Input } from '../../../components/Input'
 import { Segment } from '../../../components/Segment'
 import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
-import { getViewIdeaRoute, type ViewIdeaRouteParams } from '../../../lib/routes'
+import { getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 
 export const EditIdeaPage = withPageWrapper({
   authorizedOnly: true,
   useQuery: () => {
-    const { makeIdea } = useParams() as ViewIdeaRouteParams
+    const { makeIdea } = getViewIdeaRoute.useParams()
     return trpc.getIdea.useQuery({ makeIdea })
   },
   setProps: ({ queryResult, ctx, checkExists, checkAccess }) => {

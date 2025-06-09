@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs'
 import path from 'path'
+import { getNewIdeaRoute } from '@make-ideas/webapp/src/lib/routes'
 import type { Idea, User } from '@prisma/client'
 import fg from 'fast-glob'
 import Handlebars from 'handlebars'
@@ -68,7 +69,7 @@ export const sendWelcomeEmail = async ({ user }: { user: Pick<User, 'nick' | 'em
     to: user.email,
     subject: 'Thanks For Registeration!',
     templateName: 'welcome',
-    templateVarieables: { nick: user.nick, addIdeaUrl: `${env.WEBAPP_URL}/ideas/new` },
+    templateVarieables: { nick: user.nick, addIdeaUrl: `${getNewIdeaRoute({ abs: true })}` },
   })
 }
 
