@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs'
 import path from 'path'
-import { getNewIdeaRoute } from '@make-ideas/webapp/src/lib/routes'
+import { getNewIdeaRoute, getViewIdeaRoute } from '@make-ideas/webapp/src/lib/routes'
 import type { Idea, User } from '@prisma/client'
 import fg from 'fast-glob'
 import Handlebars from 'handlebars'
@@ -85,5 +85,22 @@ export const sendIdeaBlockedEmail = async ({
     subject: 'Your Idea Blocked!',
     templateName: 'ideaBlocked',
     templateVarieables: { makeIdea: idea.nick },
+  })
+}
+
+export const sendMostLikedIdeasEmail = async ({
+  user,
+  ideas,
+}: {
+  user: Pick<User, 'email'>
+  ideas: Pick<Idea, 'nick' | 'name'>[]
+}) => {
+  return await sendEmail({
+    to: user.email,
+    subject: 'Most Liked Ideas!',
+    templateName: 'mostLikedIdeas',
+    templateVarieables: {
+      ideas: ideas.map((idea) => ({ name: idea.name, url: getViewIdeaRoute({ abs: true, makeIdea: idea.nick }) })),
+    },
   })
 }

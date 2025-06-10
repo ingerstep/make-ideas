@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@make-ideas/backend": "workspace:*",
+    "@make-ideas/shared": "workspace:*",
     "@tanstack/react-query": "^4.36.1",
     "@trpc/client": "^10.45.2",
     "@trpc/react-query": "^10.45.2",

@@ -1,7 +1,7 @@
 import { zUpdatePasswordTrpcInput } from '@make-ideas/backend/src/router/auth/updatePassword/input'
 import { zUpdateProfileTrpcInput } from '@make-ideas/backend/src/router/auth/updateProfile/input'
 import type { TrpcRouterOutput } from '@make-ideas/backend/src/router/types'
-import { z } from 'zod'
+import { zPasswordsMustBeTheSame, zStringRequired } from '../../../../../shared/src/zod'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
@@ -50,17 +50,9 @@ const Password = () => {
     },
     validationSchema: zUpdatePasswordTrpcInput
       .extend({
-        newPasswordAgain: z.string().min(1),
+        newPasswordAgain: zStringRequired,
       })
-      .superRefine((val, ctx) => {
-        if (val.newPassword !== val.newPasswordAgain) {
-          ctx.addIssue({
-            code: 'custom',
-            path: ['newPasswordAgain'],
-            message: 'Passwords do not match',
-          })
-        }
-      }),
+      .superRefine(zPasswordsMustBeTheSame('newPassword', 'newPasswordAgain')),
     onSubmit: async ({ newPassword, oldPassword }) => {
       await updatePassword.mutateAsync({ newPassword, oldPassword })
     },

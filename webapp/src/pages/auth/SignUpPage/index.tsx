@@ -1,6 +1,6 @@
 import { zSignUpTrpcInput } from '@make-ideas/backend/src/router/auth/signUp/input'
 import Cookies from 'js-cookie'
-import z from 'zod'
+import { zPasswordsMustBeTheSame, zStringRequired } from '../../../../../shared/src/zod'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
@@ -25,17 +25,9 @@ export const SignUpPage = withPageWrapper({
     },
     validationSchema: zSignUpTrpcInput
       .extend({
-        confirmPassword: z.string().min(1),
+        confirmPassword: zStringRequired,
       })
-      .superRefine((values, ctx) => {
-        if (values.password !== values.confirmPassword) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ['confirmPassword'],
-            message: 'Passwords must be the same',
-          })
-        }
-      }),
+      .superRefine(zPasswordsMustBeTheSame('password', 'confirmPassword')),
     onSubmit: async (values) => {
       const { token } = await signUp.mutateAsync(values)
       Cookies.set('token', token, { expires: 99999 })

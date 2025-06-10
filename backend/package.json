@@ -22,10 +22,12 @@
   },
   "dependencies": {
     "@make-ideas/webapp": "workspace:*",
+    "@make-ideas/shared": "workspace:*",
     "@prisma/client": "^6.8.2",
     "@trpc/server": "10.45.2",
     "axios": "^1.9.0",
     "cors": "^2.8.5",
+    "cron": "^4.3.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "fast-glob": "^3.3.3",
@@ -40,6 +42,7 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.18",
+    "@types/cron": "^2.4.3",
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/lodash": "^4.17.17",
