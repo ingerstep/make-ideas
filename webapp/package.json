@@ -15,6 +15,7 @@
   "dependencies": {
     "@make-ideas/backend": "workspace:*",
     "@make-ideas/shared": "workspace:*",
+    "@nanostores/react": "^1.0.0",
     "@tanstack/react-query": "^4.36.1",
     "@trpc/client": "^10.45.2",
     "@trpc/react-query": "^10.45.2",
@@ -27,6 +28,7 @@
     "include-media": "^2.0.0",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
+    "nanostores": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.5",
