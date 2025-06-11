@@ -1,27 +1,30 @@
+import { ExpectedError } from '../../../lib/error'
 import { toClientMe } from '../../../lib/models'
-import { trpc } from '../../../lib/trpc'
+import { trpcLoggedProcedure } from '../../../lib/trpc'
 import { zUpdateProfileTrpcInput } from './input'
 
-export const updateProfileTrpcRoute = trpc.procedure.input(zUpdateProfileTrpcInput).mutation(async ({ ctx, input }) => {
-  if (!ctx.me) {
-    throw new Error('UNAUTHORIZED')
-  }
-  if (ctx.me.nick !== input.nick) {
-    const exUser = await ctx.prisma.user.findUnique({
-      where: {
-        nick: input.nick,
-      },
-    })
-    if (exUser) {
-      throw new Error('USER ALREADY EXISTS')
+export const updateProfileTrpcRoute = trpcLoggedProcedure
+  .input(zUpdateProfileTrpcInput)
+  .mutation(async ({ ctx, input }) => {
+    if (!ctx.me) {
+      throw new Error('UNAUTHORIZED')
     }
-  }
-  const updateMe = await ctx.prisma.user.update({
-    where: {
-      id: ctx.me.id,
-    },
-    data: input,
+    if (ctx.me.nick !== input.nick) {
+      const exUser = await ctx.prisma.user.findUnique({
+        where: {
+          nick: input.nick,
+        },
+      })
+      if (exUser) {
+        throw new ExpectedError('User with this nick already exists')
+      }
+    }
+    const updateMe = await ctx.prisma.user.update({
+      where: {
+        id: ctx.me.id,
+      },
+      data: input,
+    })
+    ctx.me = updateMe
+    return toClientMe(updateMe)
   })
-  ctx.me = updateMe
-  return toClientMe(updateMe)
-})

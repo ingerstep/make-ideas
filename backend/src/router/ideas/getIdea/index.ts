@@ -1,8 +1,9 @@
 import _ from 'lodash'
-import { trpc } from '../../../lib/trpc'
+import { ExpectedError } from '../../../lib/error'
+import { trpcLoggedProcedure } from '../../../lib/trpc'
 import { zGetIdeaTrpcInput } from './input'
 
-export const getIdeaTrpcRoute = trpc.procedure.input(zGetIdeaTrpcInput).query(async ({ ctx, input }) => {
+export const getIdeaTrpcRoute = trpcLoggedProcedure.input(zGetIdeaTrpcInput).query(async ({ ctx, input }) => {
   const rawIdea = await ctx.prisma.idea.findUnique({
     where: {
       nick: input.makeIdea,
@@ -31,7 +32,7 @@ export const getIdeaTrpcRoute = trpc.procedure.input(zGetIdeaTrpcInput).query(as
     },
   })
   if (rawIdea?.blockedAt) {
-    throw new Error('Idea blocked by admin')
+    throw new ExpectedError('Idea blocked by admin')
   }
 
   const isLikedByMe = !!rawIdea?.ideasLikes.length

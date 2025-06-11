@@ -6,9 +6,11 @@
   "compilerOptions": {
     "plugins": [{ "transform": "typescript-transform-paths" }],
     "paths": {
-      "@make-ideas/webapp/*": ["../webapp/*"]
+      "@make-ideas/webapp/*": ["../webapp/*"],
+      "@make-ideas/shared/*": ["../shared/*"]
     },
     "outDir": "./dist",
+    "sourceRoot": "/",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,

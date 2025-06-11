@@ -16,9 +16,11 @@
     "@make-ideas/backend": "workspace:*",
     "@make-ideas/shared": "workspace:*",
     "@nanostores/react": "^1.0.0",
+    "@sentry/react": "^9.28.0",
     "@tanstack/react-query": "^4.36.1",
     "@trpc/client": "^10.45.2",
     "@trpc/react-query": "^10.45.2",
+    "@trpc/server": "10.45.2",
     "@types/js-cookie": "^3.0.6",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
@@ -42,6 +44,7 @@
     "zod": "^3.25.36"
   },
   "devDependencies": {
+    "@sentry/vite-plugin": "^3.5.0",
     "@types/lodash": "^4.17.17",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",

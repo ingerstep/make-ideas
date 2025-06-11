@@ -4,6 +4,7 @@ import { Layout } from './components/Layout'
 import { NotAuthRouteTracker } from './components/NonAuthRouteTracker'
 import { AppContextProvider } from './lib/ctx'
 import * as routes from './lib/routes'
+import { SentryUser } from './lib/sentry'
 import { TrpcProvider } from './lib/trpc'
 import './styles/global.scss'
 import { EditProfilePage } from './pages/auth/EditProfilePage'
@@ -15,14 +16,15 @@ import { EditIdeaPage } from './pages/ideas/EditIdeaPage'
 import { NewIdeaPage } from './pages/ideas/NewIdeaPage'
 import { ViewIdeaPage } from './pages/ideas/ViewIdeaPage'
 import { NotFoundPage } from './pages/other/NotFoundPage'
-
+import './lib/sentry'
 export const App = () => {
   return (
     <HelmetProvider>
       <TrpcProvider>
         <AppContextProvider>
-          <NotAuthRouteTracker />
           <BrowserRouter>
+            <SentryUser />
+            <NotAuthRouteTracker />
             <Routes>
               <Route path={routes.getSignOutRoute.definition} element={<SignOutPage />} />
               <Route element={<Layout />}>
