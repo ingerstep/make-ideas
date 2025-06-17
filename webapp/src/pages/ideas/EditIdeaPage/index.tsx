@@ -11,6 +11,9 @@ import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
+import { UploadsToCloudinary } from '../../../components/UploadsToCloudinary'
+import { UploadToS3 } from '../../../components/UploadToS3'
+import { UploadsToS3 } from '../../../components/UploadsToS3'
 
 export const EditIdeaPage = withPageWrapper({
   authorizedOnly: true,
@@ -28,7 +31,7 @@ export const EditIdeaPage = withPageWrapper({
   const navigate = useNavigate()
   const updateIdea = trpc.updateIdea.useMutation()
   const { formik, alertProps, buttonProps } = useForm({
-    initialValues: pick(idea, ['name', 'nick', 'description', 'text']),
+    initialValues: pick(idea, ['name', 'nick', 'description', 'text', 'images', 'certificate', 'documents']),
     validationSchema: zUpdateIdeaTrpcInput.omit({ ideaId: true }),
     onSubmit: async (values) => {
       await updateIdea.mutateAsync({ ideaId: idea.id, ...values })
@@ -46,6 +49,9 @@ export const EditIdeaPage = withPageWrapper({
           <Input label="Nick" name="nick" formik={formik} />
           <Input label="Description" name="description" maxWidth={500} formik={formik} />
           <Input label="Text" name="text" formik={formik} />
+          <UploadsToCloudinary label="Images" name="images" type="image" preset="preview" formik={formik} />
+          <UploadToS3 label="Certificate" name="certificate" formik={formik} />
+          <UploadsToS3 label="Documents" name="documents" formik={formik} />
           <Alert {...alertProps} />
           <Button {...buttonProps}>Update Idea</Button>
         </FormItems>

@@ -11,6 +11,8 @@ import { getIdeaTrpcRoute } from './ideas/getIdea'
 import { getIdeasTrpcRoute } from './ideas/getIdeas'
 import { setIdeaLikeTrpcRoute } from './ideas/setIdeaLike'
 import { updateIdeaTrpcRoute } from './ideas/updateIdea'
+import { prepareCloudinaryUploadTrpcRoute } from './upload/prepareCloudinaryUpload'
+import { prepareS3UploadTrpcRoute } from './upload/prepareS3Upload'
 // @endindex
 export const trpcRouter = createTrpcRouter({
   // @index('./**/index.ts', f => `${f.path.split('/').slice(0, -1).pop()}: ${f.path.split('/').slice(0, -1).pop()}TrpcRoute,`)
@@ -25,5 +27,7 @@ export const trpcRouter = createTrpcRouter({
   getIdeas: getIdeasTrpcRoute,
   setIdeaLike: setIdeaLikeTrpcRoute,
   updateIdea: updateIdeaTrpcRoute,
+  prepareCloudinaryUpload: prepareCloudinaryUploadTrpcRoute,
+  prepareS3Upload: prepareS3UploadTrpcRoute,
   // @endindex
 })

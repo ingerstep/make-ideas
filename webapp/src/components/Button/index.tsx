@@ -2,19 +2,34 @@ import cn from 'classnames'
 import { Link } from 'react-router-dom'
 import cl from './index.module.scss'
 
+type ButtonColor = 'red' | 'green'
 export type ButtonProps = {
   children: React.ReactNode
   loading?: boolean
   color?: ButtonColor
+  type?: 'button' | 'submit'
+  disabled?: boolean
+  onClick?: () => void
 }
-type ButtonColor = 'red' | 'green'
-
-export const Button = ({ children, loading = false, color = 'green' }: ButtonProps) => {
+export const Button = ({
+  children,
+  loading = false,
+  color = 'green',
+  type = 'submit',
+  disabled,
+  onClick,
+}: ButtonProps) => {
   return (
     <button
-      className={cn({ [cl.button]: true, [cl[`color-${color}`]]: true, [cl.loading]: loading, [cl.disabled]: loading })}
-      type="submit"
-      disabled={loading}
+      className={cn({
+        [cl.button]: true,
+        [cl[`color-${color}`]]: true,
+        [cl.disabled]: disabled || loading,
+        [cl.loading]: loading,
+      })}
+      type={type}
+      disabled={disabled || loading}
+      onClick={onClick}
     >
       <span className={cl.text}>{children}</span>
     </button>
@@ -35,4 +50,8 @@ export const LinkButton = ({
       {children}
     </Link>
   )
+}
+
+export const Buttons = ({ children }: { children: React.ReactNode }) => {
+  return <div className={cl.buttons}>{children}</div>
 }

@@ -8,6 +8,8 @@ export const zEnv = z.object({
   VITE_BACKEND_TRPC_URL: zEnvNonemptyTrimmed,
   VITE_WEBAPP_URL: zEnvNonemptyTrimmed,
   VITE_WEBAPP_SENTRY_DSN: zEnvNonemptyTrimmedRequiredOnNotLocal,
+  VITE_CLOUDINARY_CLOUD_NAME: zEnvNonemptyTrimmed,
+  VITE_S3_URL: zEnvNonemptyTrimmed,
 })
 
 export const env = zEnv.parse(process.env)
