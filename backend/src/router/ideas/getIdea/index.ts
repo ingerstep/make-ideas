@@ -1,7 +1,7 @@
-import _ from 'lodash'
 import { ExpectedError } from '../../../lib/error'
 import { trpcLoggedProcedure } from '../../../lib/trpc'
 import { zGetIdeaTrpcInput } from './input'
+import { omit } from '@make-ideas/shared/src/omit'
 
 export const getIdeaTrpcRoute = trpcLoggedProcedure.input(zGetIdeaTrpcInput).query(async ({ ctx, input }) => {
   const rawIdea = await ctx.prisma.idea.findUnique({
@@ -37,7 +37,7 @@ export const getIdeaTrpcRoute = trpcLoggedProcedure.input(zGetIdeaTrpcInput).que
 
   const isLikedByMe = !!rawIdea?.ideasLikes.length
   const likesCount = rawIdea?._count?.ideasLikes || 0
-  const idea = rawIdea && { ..._.omit(rawIdea, ['ideasLikes', '_count']), isLikedByMe, likesCount }
+  const idea = rawIdea && { ...omit(rawIdea, ['ideasLikes', '_count']), isLikedByMe, likesCount }
 
   return { idea }
 })

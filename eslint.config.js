@@ -1,37 +1,35 @@
-import pluginJs from '@eslint/js'
-import eslintConfigPrettier from 'eslint-config-prettier'
+import { configs } from '@eslint/js'
+import { rules as _rules } from 'eslint-config-prettier'
 import pluginImport from 'eslint-plugin-import'
-import prettierPlugin from 'eslint-plugin-prettier'
-import eslintReact from 'eslint-plugin-react'
-import pluginReact from 'eslint-plugin-react'
-import globals from 'globals'
-import tseslint from 'typescript-eslint'
+import prettierPlugin, { configs as _configs } from 'eslint-plugin-prettier'
+import pluginReact, { configs as __configs } from 'eslint-plugin-react'
+import { browser, node } from 'globals'
+import { plugin } from 'typescript-eslint'
+import jestPlugin, { configs as ___configs } from 'eslint-plugin-jest'
 
 export default [
   {
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
-  },
-  {
-    ignores: ['node_modules', 'dist'],
-  },
-  {
+    languageOptions: {
+      globals: { ...browser, ...node },
+      parserOptions: {
+        ecmaVersion: 2021,
+        sourceType: 'module',
+      },
+    },
     plugins: {
-      '@typescript-eslint': tseslint.plugin,
-      react: eslintReact,
+      '@typescript-eslint': plugin,
+      react: pluginReact,
       prettier: prettierPlugin,
       import: pluginImport,
+      jest: jestPlugin,
     },
-  },
-  {
-    languageOptions: { globals: globals.browser },
-  },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
-  {
     rules: {
-      ...prettierPlugin.configs.recommended.rules,
-      ...eslintConfigPrettier.rules,
+      ...configs.recommended.rules,
+      ...__configs.flat.recommended.rules,
+      ..._configs.recommended.rules,
+      ..._rules,
+      ...___configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
       'import/order': [
         'error',
@@ -58,5 +56,13 @@ export default [
       'no-irregular-whitespace': ['error', { skipTemplates: true, skipStrings: true }],
       'no-console': ['error', { allow: ['info', 'error', 'warn'] }],
     },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+  },
+  {
+    ignores: ['node_modules', 'dist', '*.config.js'],
   },
 ]

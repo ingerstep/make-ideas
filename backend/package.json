@@ -3,14 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "ts-node-dev --watch ./src/emails/dist,./.env --rs --exit-child ./src/index.ts",
-    "build-ts": "rimraf ./dist && tsc --build ./tsconfig.json",
+    "test": "jest --runInBand",
+    "dev": "cross-env NODE_ENV=development ts-node-dev --watch ./src/emails/dist,./.env --rs --exit-child ./src/index.ts",
+    "build-ts": "rimraf ./dist && tsc --build ./tsconfig.build.json",
     "build": "pnpm build-ts && pnpm build-emails && pnpm copy-emails",
-    "start": "node ./dist/backend/src/index.js",
+    "start": "cross-env NODE_ENV=production node ./dist/backend/src/index.js",
     "types": "tsc --noEmit --project ./tsconfig.json",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/.eslintcache --ext .ts .",
     "prettify": "prettier --log-level warn --cache --write '{src/**/*,*}.{ts,tsx,js,json,yml,scss}' '!**/{node_modules,dist}/**/*'",
     "pmd": "prisma migrate dev",
+    "pmt": "dotenv -e ./.env.test prisma migrate deploy",
     "pgc": "prisma generate",
     "sentry-release": "dotenv -- bash -c 'sentry-cli releases new ${SOURCE_VERSION} --finalize --org ideanick-f76e1b5dd --project backend --auth-token ${SENTRY_AUTH_TOKEN}'",
     "sentry-sourcemaps": "dotenv -- bash -c 'sentry-cli releases files ${SOURCE_VERSION} upload-sourcemaps ./dist --org ideanick-f76e1b5dd --project backend'",
@@ -23,6 +25,12 @@
   "prisma": {
     "schema": "./src/prisma/schema.prisma"
   },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "es2021": true
+    }
+  },
   "dependencies": {
     "@make-ideas/shared": "workspace:*",
     "@make-ideas/webapp": "workspace:*",
@@ -33,6 +41,7 @@
     "axios": "^1.9.0",
     "cors": "^2.8.5",
     "cron": "^4.3.1",
+    "date-fns": "^4.1.0",
     "debug": "^4.4.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",

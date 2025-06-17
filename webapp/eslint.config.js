@@ -11,13 +11,6 @@ export default [
   {
     rules: {
       'node/no-process-env': 'error',
-      'no-restricted-syntax': [
-        'error',
-        {
-          selector: '[type=MetaProperty][property.name=env]',
-          message: 'Use instead import {env} from "lib/env"',
-        },
-      ],
       'import/no-restricted-paths': [
         'error',
         {
@@ -64,22 +57,10 @@ export default [
       },
     },
     settings: {
-      react: {
-        version: 'detect',
-      },
       'import/resolver': {
         node: {
           extensions: ['.js', '.ts', '.tsx'],
         },
-      },
-    },
-  },
-  {
-    files: ['./vite.config.ts'],
-    languageOptions: {
-      parserOptions: {
-        project: ['tsconfig.json', 'tsconfig.node.json', 'tsconfig.app.json'],
-        sourceType: 'module',
       },
     },
   },

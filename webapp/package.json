@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "test": "jest",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "types": "tsc --noEmit --project ./tsconfig.app.json && tsc --noEmit --project ./tsconfig.node.json",
@@ -11,6 +12,12 @@
     "stylelint": "stylelint --cache --cache-location ./node_modules/.cache/.stylelintcache 'src/**/*.scss'",
     "stylecheck": "sass --update -q ./src:./node_modules/.cache/.stylecheckcache",
     "prettify": "prettier --log-level warn --cache --write '{src/**/*,*}.{ts,tsx,js,json,yml,scss}' '!**/{node_modules,dist}/**/*'"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "es2021": true
+    }
   },
   "dependencies": {
     "@make-ideas/backend": "workspace:*",
@@ -46,10 +53,13 @@
   "devDependencies": {
     "@sentry/vite-plugin": "^3.5.0",
     "@types/lodash": "^4.17.17",
+    "@types/node": "^22.15.18",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@types/react-infinite-scroller": "^1.2.5",
     "@vitejs/plugin-react": "^4.4.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jest": "^28.14.0",
     "eslint-plugin-node": "^11.1.0",
     "stylelint": "^16.20.0",
     "stylelint-config-prettier-scss": "^1.0.0",

@@ -9,10 +9,12 @@ import { applyPassportToExpressApp } from './lib/passport'
 import { applyTrpcToExpressApp } from './lib/trpc'
 import { trpcRouter } from './router'
 import { presetDb } from './scripts/presetDb'
+import { initSentry } from './lib/sentry'
 
 void (async () => {
   let ctx: AppContext | null = null
   try {
+    initSentry()
     ctx = creatAppContext()
     await presetDb(ctx)
     const expressApp = express()

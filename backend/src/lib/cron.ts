@@ -7,7 +7,7 @@ export const applyCron = (ctx: AppContext) => {
   new CronJob(
     '0 10 1 * *',
     () => {
-      notifyAboutMostLikedIdeas(ctx).catch((error) => {
+      notifyAboutMostLikedIdeas({ ctx }).catch((error) => {
         logger.error('cron', error)
       })
     },

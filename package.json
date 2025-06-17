@@ -5,6 +5,8 @@
   "scripts": {
     "b": "pnpm --filter @make-ideas/backend",
     "w": "pnpm --filter @make-ideas/webapp",
+    "sh": "pnpm --filter @make-ideas/shared",
+    "test": "pnpm -r test",
     "dev": "pnpm -r --parallel dev",
     "types": "concurrently 'pnpm b types' 'pnpm w types'",
     "lint": "concurrently 'pnpm b lint' 'pnpm w lint'",
@@ -29,20 +31,31 @@
       "git add"
     ]
   },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "es2021": true
+    }
+  },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
+    "@types/jest": "^30.0.0",
     "concurrently": "^9.1.2",
     "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
     "eslint": "^9.20.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jest": "^28.14.0",
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "globals": "^15.14.0",
+    "jest": "^30.0.0",
     "lint-staged": "^16.0.0",
     "prettier": "^3.4.2",
     "prettier-eslint": "^16.3.0",
     "rimraf": "^6.0.1",
+    "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "ts-patch": "^3.3.0",
