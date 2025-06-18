@@ -1,6 +1,7 @@
-process.env.WEBAPP_URL = 'http://example.com'
-
+import { sharedEnv } from '@make-ideas/shared/src/env'
 import { pgr } from './pumpGetRoute'
+
+sharedEnv.WEBAPP_URL = 'http://example.com'
 
 describe('pgr', () => {
   it('return simple route', () => {

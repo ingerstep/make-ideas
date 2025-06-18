@@ -2,7 +2,7 @@ import z from 'zod'
 import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from '../../../shared/src/zod'
 
 export const zEnv = z.object({
-  NODE_ENV: z.enum(['development', 'production', 'test']),
+  NODE_ENV: z.enum(['development', 'production']),
   HOST_ENV: zEnvHost,
   SOURCE_VERSION: zEnvNonemptyTrimmedRequiredOnNotLocal,
   VITE_BACKEND_TRPC_URL: zEnvNonemptyTrimmed,
@@ -12,4 +12,6 @@ export const zEnv = z.object({
   VITE_S3_URL: zEnvNonemptyTrimmed,
 })
 
-export const env = zEnv.parse(process.env)
+const envFromBackend = (window as any).webappEnvFromBackend
+// eslint-disable-next-line node/no-process-env
+export const env = zEnv.parse(envFromBackend?.replaceMeWithPublicEnv ? process.env : envFromBackend)

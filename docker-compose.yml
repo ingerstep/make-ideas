@@ -1,21 +1,15 @@
 services:
-  db:
-    image: postgres
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+  app:
+    build:
+      context: .
+      args:
+        SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+        SOURCE_VERSION: ${SOURCE_VERSION}
+    image: makeideas
+    container_name: makeideas-container
+    env_file:
+      - ./webapp/.env
+      - ./backend/.env
+      - ./.env.docker
     ports:
-      - '5432:5432'
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    networks:
-      - make_ideas
-
-networks:
-  make_ideas:
-    name: make_ideas
-    driver: bridge
-
-volumes:
-  pgdata:
+      - '${PORT}:${PORT}'

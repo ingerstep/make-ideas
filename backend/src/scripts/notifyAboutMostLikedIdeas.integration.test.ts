@@ -49,8 +49,39 @@ describe('getMostLikedIdeas', () => {
     const now = startOfMonth(new Date())
     await createData(now)
 
-    expect(withoutNoize(await getMostLikedIdeas({ ctx: appContext, limit: 2, now }))).toMatchInlineSnapshot()
-    expect(withoutNoize(await getMostLikedIdeas({ ctx: appContext, limit: 10, now }))).toMatchInlineSnapshot()
+    expect(withoutNoize(await getMostLikedIdeas({ ctx: appContext, limit: 2, now }))).toMatchInlineSnapshot(`
+[
+  {
+    "name": "Idea 1",
+    "nick": "idea1",
+    "thisMonthLikesCount": 3,
+  },
+  {
+    "name": "Idea 2",
+    "nick": "idea2",
+    "thisMonthLikesCount": 2,
+  },
+]
+`)
+    expect(withoutNoize(await getMostLikedIdeas({ ctx: appContext, limit: 10, now }))).toMatchInlineSnapshot(`
+[
+  {
+    "name": "Idea 1",
+    "nick": "idea1",
+    "thisMonthLikesCount": 3,
+  },
+  {
+    "name": "Idea 2",
+    "nick": "idea2",
+    "thisMonthLikesCount": 2,
+  },
+  {
+    "name": "Idea 3",
+    "nick": "idea3",
+    "thisMonthLikesCount": 1,
+  },
+]
+`)
   })
 })
 
@@ -62,6 +93,84 @@ describe('notifyAboutMostLikedIdeas', () => {
     expect(sendEmail).toHaveBeenCalledTimes(5)
     const calls = jest.mocked(sendEmail).mock.calls
     const prettifiedCallProps = calls.map(([props]) => withoutNoize(props))
-    expect(prettifiedCallProps).toMatchInlineSnapshot()
+    expect(prettifiedCallProps).toMatchInlineSnapshot(`
+[
+  {
+    "subject": "Most Liked Ideas!",
+    "templateName": "mostLikedIdeas",
+    "templateVarieables": {
+      "ideas": [
+        {
+          "name": "Idea 1",
+        },
+        {
+          "name": "Idea 2",
+        },
+      ],
+    },
+    "to": "user1@example.com",
+  },
+  {
+    "subject": "Most Liked Ideas!",
+    "templateName": "mostLikedIdeas",
+    "templateVarieables": {
+      "ideas": [
+        {
+          "name": "Idea 1",
+        },
+        {
+          "name": "Idea 2",
+        },
+      ],
+    },
+    "to": "user2@example.com",
+  },
+  {
+    "subject": "Most Liked Ideas!",
+    "templateName": "mostLikedIdeas",
+    "templateVarieables": {
+      "ideas": [
+        {
+          "name": "Idea 1",
+        },
+        {
+          "name": "Idea 2",
+        },
+      ],
+    },
+    "to": "user3@example.com",
+  },
+  {
+    "subject": "Most Liked Ideas!",
+    "templateName": "mostLikedIdeas",
+    "templateVarieables": {
+      "ideas": [
+        {
+          "name": "Idea 1",
+        },
+        {
+          "name": "Idea 2",
+        },
+      ],
+    },
+    "to": "user4@example.com",
+  },
+  {
+    "subject": "Most Liked Ideas!",
+    "templateName": "mostLikedIdeas",
+    "templateVarieables": {
+      "ideas": [
+        {
+          "name": "Idea 1",
+        },
+        {
+          "name": "Idea 2",
+        },
+      ],
+    },
+    "to": "user5@example.com",
+  },
+]
+`)
   })
 })

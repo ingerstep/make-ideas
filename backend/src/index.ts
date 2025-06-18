@@ -10,6 +10,7 @@ import { applyTrpcToExpressApp } from './lib/trpc'
 import { trpcRouter } from './router'
 import { presetDb } from './scripts/presetDb'
 import { initSentry } from './lib/sentry'
+import { applyServeWebApp } from './lib/serveWebApp'
 
 void (async () => {
   let ctx: AppContext | null = null
@@ -25,6 +26,7 @@ void (async () => {
     applyPassportToExpressApp(expressApp, ctx)
     applyTrpcToExpressApp(expressApp, ctx, trpcRouter)
     applyCron(ctx)
+    await applyServeWebApp(expressApp)
     expressApp.use((error: unknown, req: express.Request, res: express.Response, next: express.NextFunction) => {
       logger.error('express', error)
       if (res.headersSent) {

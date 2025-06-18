@@ -11,6 +11,13 @@
     "types": "concurrently 'pnpm b types' 'pnpm w types'",
     "lint": "concurrently 'pnpm b lint' 'pnpm w lint'",
     "prettify": "pnpm -r --parallel prettify",
+    "dcc": "dotenv -e ./.env.docker -e ./backend/.env -e ./webapp/.env -- bash -c 'docker compose config'",
+    "dcb": "dotenv -e ./.env.docker -e ./backend/.env -e ./webapp/.env -- bash -c 'docker compose build'",
+    "dcu": "dotenv -e ./.env.docker -e ./backend/.env -e ./webapp/.env -- bash -c 'docker compose up'",
+    "dth": "docker tag ideanick-image registry.heroku.com/makeideas/web",
+    "hl": "heroku login && heroku container:login",
+    "dph": "docker push registry.heroku.com/makeideas/web",
+    "hr": "heroku container:release web -a makeideas",
     "prepare": "git config core.hooksPath .git-hooks || echo 'Not in a git repo'"
   },
   "workspaces": [
@@ -37,12 +44,15 @@
       "es2021": true
     }
   },
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "dotenv-cli": "^8.0.0"
+  },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "@types/jest": "^30.0.0",
     "concurrently": "^9.1.2",
     "copyfiles": "^2.4.1",
-    "cross-env": "^7.0.3",
     "eslint": "^9.20.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-import": "^2.31.0",
